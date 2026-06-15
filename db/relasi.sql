@@ -1,0 +1,5 @@
+ALTER TABLE `nilai` ADD CONSTRAINT `Siswa_nilai_fkey` FOREIGN KEY (`siswa_id`) REFERENCES `siswa`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `nilai` ADD CONSTRAINT `Kelas_nilai_fkey` FOREIGN KEY (`kelas_id`) REFERENCES `kelas`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `nilai` ADD CONSTRAINT `Mata_pelajaran_nilai_fkey` FOREIGN KEY (`mapel_id`) REFERENCES `mata_pelajaran`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
