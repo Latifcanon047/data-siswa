@@ -22,7 +22,7 @@ model Siswa {
 
 model Kelas {
   id        Int     @id @default(autoincrement())
-  namaKelas String
+  namaKelas String  @unique
   waliKelas String
   nilais    Nilai[]
 }
@@ -44,5 +44,5 @@ model Nilai {
   kelas   Kelas         @relation(fields: [kelasId], references: [id], onDelete: Cascade)
   mapel   MataPelajaran @relation(fields: [mapelId], references: [id], onDelete: Cascade)
 
-    @@unique([siswaId, mapelId]) 
+    @@unique([siswaId, mapelId])
 }
