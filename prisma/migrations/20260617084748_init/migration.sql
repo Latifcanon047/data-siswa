@@ -5,6 +5,7 @@ CREATE TABLE `Siswa` (
     `nis` VARCHAR(191) NOT NULL,
     `alamat` VARCHAR(191) NOT NULL,
 
+    UNIQUE INDEX `Siswa_nis_key`(`nis`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -14,6 +15,7 @@ CREATE TABLE `Kelas` (
     `namaKelas` VARCHAR(191) NOT NULL,
     `waliKelas` VARCHAR(191) NOT NULL,
 
+    UNIQUE INDEX `Kelas_namaKelas_key`(`namaKelas`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -24,6 +26,7 @@ CREATE TABLE `MataPelajaran` (
     `kodeMapel` VARCHAR(191) NOT NULL,
 
     UNIQUE INDEX `MataPelajaran_namaMapel_key`(`namaMapel`),
+    UNIQUE INDEX `MataPelajaran_kodeMapel_key`(`kodeMapel`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -35,6 +38,7 @@ CREATE TABLE `Nilai` (
     `mapelId` INTEGER NOT NULL,
     `nilai` DECIMAL(4, 1) NOT NULL,
 
+    UNIQUE INDEX `Nilai_siswaId_mapelId_key`(`siswaId`, `mapelId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
