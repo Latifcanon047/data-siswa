@@ -1,3 +1,11 @@
+import NilaiClient from "@/components/admin/NilaiClient";
+
 export default function NilaiPage() {
-  <div>halloo</div>;
+  return (
+    <>
+      <div>
+        <NilaiClient />
+      </div>
+    </>
+  );
 }

@@ -8,9 +8,9 @@ export async function PATCH(
   try {
     const { id } = await params;
     const body = await req.json();
-    const { nilaiSiswa } = body;
+    const { nilai } = body;
 
-    if (!nilaiSiswa) {
+    if (!nilai) {
       return Response.json(
         { error: "nilai tidak boleh kosong" },
         { status: 400 },
@@ -22,7 +22,7 @@ export async function PATCH(
         id: parseInt(id),
       },
       data: {
-        nilai: nilaiSiswa,
+        nilai: nilai,
       },
     });
 
