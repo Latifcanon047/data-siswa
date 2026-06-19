@@ -27,15 +27,25 @@ export async function POST(req: NextRequest) {
 
     const existingSiswa = await prisma.siswa.findFirst({
       where: {
-        nama: nama,
-        nis: nis,
-        alamat: alamat,
-      },
-    });
+        OR: [
+          { nis: nis },
+          { AND: [{ nama: nama },
+            { alamat: alamat }
+          ]
+        }
+      ]
+    },
+  });
 
     if (existingSiswa) {
+      if (existingSiswa.nis === nis) {
+        return Response.json(
+          { error: "Siswa dengan NIS tersebut sudah terdaftar"}
+          { status: 400 }
+        );
+      }
       return Response.json(
-        { error: "Siswa dengan nama, nis, dan alamat sudah ada" },
+        { error: "Siswa dengan nama dan alamat sudah ada" },
         { status: 400 },
       );
     }
