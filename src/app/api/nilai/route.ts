@@ -6,22 +6,39 @@ export async function GET(req: NextRequest) {
   try {
     const searchParams = req.nextUrl.searchParams;
 
-    const kelasId = searchParams.get("kelasId");
-    const mapelId = searchParams.get("mapelId");
+    const kelasId = Number(searchParams.get("kelasId"));
+    const mapelId = Number(searchParams.get("mapelId"));
 
-    const daftarNilai = await prisma.nilai.findMany({
+    if (!kelasId || !mapelId) {
+      return Response.json(
+        { error: "kelasId dan mapelId wajib diisi" },
+        { status: 400 },
+      );
+    }
+
+    const siswa = await prisma.siswa.findMany({
       where: {
-        kelasId: kelasId ? parseInt(kelasId) : undefined,
-        mapelId: mapelId ? parseInt(mapelId) : undefined,
+        kelasId: kelasId ? kelasId : undefined,
       },
+      orderBy: { nama: "asc" },
       include: {
-        siswa: true,
-        kelas: true,
-        mapel: true,
+        nilais: {
+          where: { mapelId },
+          select: { id: true, nilai: true },
+        },
       },
     });
 
-    return Response.json(daftarNilai);
+    const result = siswa.map((s) => ({
+      siswaId: s.id,
+      nama: s.nama,
+      nis: s.nis,
+      nilaiId: s.nilais[0]?.id,
+      nilai: s.nilais[0]?.nilai ?? null,
+    }));
+
+    console.log(result);
+    return Response.json(result);
   } catch (error) {
     return Response.json({ error: "gagal memuat data" }, { status: 500 });
   }
