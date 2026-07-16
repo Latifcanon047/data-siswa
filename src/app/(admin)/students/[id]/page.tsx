@@ -60,12 +60,12 @@ export default function EditSiswaPage() {
       }
    }
 
-   if (loading) return <p>Sabar YAA.............</p>;
+   if (loading) return <p>Yang sabar Sayang</p>;
 
    return (
       <div>
          <div className="nav">
-            <Link href="/students"> Balik </Link>
+            <Link href="/students"> Kembali </Link>
          </div>
 
          <h1> Edit Siswa/Siswi </h1>
