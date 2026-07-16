@@ -25,30 +25,52 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const existingSiswa = await prisma.siswa.findFirst({
-      where: {
-        OR: [
-          { nis: nis },
-          { AND: [{ nama: nama },
-            { alamat: alamat }
-          ]
-        }
-      ]
-    },
-  });
-
-    if (existingSiswa) {
-      if (existingSiswa.nis === nis) {
-        return Response.json(
-          { error: "Siswa dengan NIS tersebut sudah terdaftar"}
-          { status: 400 }
-        );
-      }
+    // Validasi input terlebih dahulu
+    // 1. Cek NIS hanya berisi angka
+    if (!/^\d+$/.test(nis)) {
       return Response.json(
-        { error: "Siswa dengan nama dan alamat sudah ada" },
-        { status: 400 },
+        { error: "NIS hanya boleh berisi angka" },
+        { status: 400 }
       );
     }
+
+    // 2. Cek nama hanya berisi huruf (termasuk spasi untuk nama lengkap)
+    if (!/^[a-zA-Z\s]+$/.test(nama)) {
+      return Response.json(
+        { error: "Nama hanya boleh berisi huruf" },
+        { status: 400 }
+      );
+    }
+
+    // 3. Alamat boleh huruf dan angka, tidak perlu validasi khusus
+
+    // Cek duplikasi hanya berdasarkan NIS
+    const existingSiswa = await prisma.siswa.findFirst({
+      where: {
+        nis: nis  // Hanya cek NIS
+      }
+    });
+
+    if (existingSiswa) {
+      return Response.json(
+        { error: "Siswa dengan NIS tersebut sudah terdaftar" },
+        { status: 400 }
+      );
+    }
+
+    // Jika tidak ada duplikasi, lanjutkan proses insert
+    const newSiswa = await prisma.siswa.create({
+      data: {
+        nis,
+        nama,
+        alamat
+      }
+    });
+
+    return Response.json(
+      { message: "Siswa berhasil ditambahkan", data: newSiswa },
+      { status: 201 }
+    );
 
     const SiswaBaru = await prisma.siswa.create({
       data: { nama, nis, alamat },
