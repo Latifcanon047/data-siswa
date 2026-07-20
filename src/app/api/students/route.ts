@@ -21,7 +21,7 @@ export async function GET() {
 
 // POST: Tambah siswa baru
 // Aturan: HANYA NIS yang harus unik (tidak boleh duplikat)
-//         Nama dan alamat BOLEH sama dengan siswa lain
+//         Nama dan alamat BOLEH sama dengan siswa yang lain
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
